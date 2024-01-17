@@ -24,3 +24,7 @@ Inside you should find ```bin``` folder inside which there is executable file
 ```cronkot "*/15 0 1,15 * 1-5 /usr/bin/find"``` 
 
 from inside of the bin directory
+
+### To Do:
++ Handle more validations
++ Handle 'L' 'W' and '#' special characters
