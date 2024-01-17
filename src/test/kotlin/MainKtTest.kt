@@ -82,6 +82,18 @@ class MainKtTest {
     verify(exactly = 1) {parseRepeatCron(any(), CronField.DAY_OF_WEEK)}
   }
 
+  @Test
+  fun `parseCronList should throw CronFieldParseException if there is no value before or after some commas`(){
+    assertThatThrownBy {
+      parseCronList(
+        ",0",
+        CronField.HOUR
+      )
+    }
+      .isInstanceOf(CronFieldParseException::class.java)
+      .hasMessage("Invalid cron list value at field ${CronField.HOUR.title}")
+  }
+
 
   @Test
   fun `parseRepeatCron should call parseRangeCron with same value as was passed to parseRepeatCron if there is no slash characters in that argument`(){
@@ -121,6 +133,19 @@ class MainKtTest {
     parseRepeatCron("4-16", CronField.DAY_OF_MONTH)
     verify{parseRangeCron("4-16", 1)}
   }
+
+  @Test
+  fun `parseRepeatCron should throw CronFieldParseException if there is more than two values if split by slash characeter`(){
+    assertThatThrownBy {
+      parseRepeatCron(
+        "1/1/1",
+        CronField.HOUR
+      )
+    }
+      .isInstanceOf(CronFieldParseException::class.java)
+      .hasMessage("Invalid cron repeat value at field ${CronField.HOUR.title}")
+  }
+
 
   @Test
   fun `parseRangeCron should return array of valid repeat numbers`(){
